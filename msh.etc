@@ -1,0 +1,5 @@
+MAINMENU	MENU-TOP
+1	mysubmenu	submenu
+1-1	menufun1-1	fun101	0
+1-2	menufun1-2	fun102	0	1-1
+2	menufun2	fun2	1	1-1
