@@ -45,13 +45,13 @@ __showmenu(){
 				sign="";\
 			}\
 			if (idstatus[$1]=="OK"){\
-				_status="  ¡Ì";\
+				_status=" âˆš";\
 			}\
 			else if (idstatus[$1]==""){\
 				_status="";\
 			}\
 			else{\
-				_status="  @@";\
+				_status=" ËŸ";\
 			}\
 			print BLANK $1" "$2 sign _status; \
 			lastid=$1;\
