@@ -147,7 +147,7 @@ __cmdcheck(){
 
 	if [ ! "X$dependflg" = "X" -a ! "X$__status" = "XOK" ]
 	then
-		errmsg=`echo "this step depends on [$dependflg] which is not executed or failed.`
+		errmsg=`echo "this step depends on [$dependflg] which is not executed or failed."`
 		return 0
 	fi
 
