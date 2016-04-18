@@ -5,5 +5,6 @@ fun102(){
 	date
 }
 fun2(){
-	echo "function 2 executed."
+  echo "function 2 executed."
+  return 2
 }
