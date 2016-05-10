@@ -2,7 +2,7 @@
 
 srcfile="./msh.etc"
 funfile="./msh.fun"
-etcfile="./.msh"
+resfile="./.msh"
 currlevel="1"
 current=
 currmenu="0"
@@ -29,7 +29,7 @@ __showmenu(){
 		expression="\$1 ~ /^$1-.\$/"
 	fi
 
-	awk -v BLANK="$blank" -v ETCFILE="$etcfile" -v MENUID="$1" \
+	awk -v BLANK="$blank" -v ETCFILE="$resfile" -v MENUID="$1" \
 	'BEGIN{\
 		while ( getline tracelog < ETCFILE == 1 ){\
 			split(tracelog,menuid);\
@@ -142,7 +142,7 @@ __cmdcheck(){
 		return 1
 	fi
 
-	__statuslist=`awk -v depend=$dependflg '{if ($1 == depend)print $2}' $etcfile`
+	__statuslist=`awk -v depend=$dependflg '{if ($1 == depend)print $2}' $resfile`
 	__status=`echo $__statuslist | awk '{print $NF}'`
 
 	if [ ! "X$dependflg" = "X" -a ! "X$__status" = "XOK" ]
@@ -151,7 +151,7 @@ __cmdcheck(){
 		return 0
 	fi
 
-	__statuslist=`awk -v current=$current '{if ($1 == current)print $2}' $etcfile`
+	__statuslist=`awk -v current=$current '{if ($1 == current)print $2}' $resfile`
 	__status=`echo $__statuslist | awk '{print $NF}'`
 
 	if [ "X$redoflg" = "XOK" -a "X$__status" = "XOK" ]
@@ -178,7 +178,7 @@ __exec(){
 
 			if [ ! "X$cmd" = "Xsubmenu" -a ! "X$cmd" = "X__upmenu" ]
 			then
-				printf "%s	%s	%s\n" $current	$status	`date +%Y/%m/%d-%H:%M:%S` >> $etcfile
+				printf "%s	%s	%s\n" $current	$status	`date +%Y/%m/%d-%H:%M:%S` >> $resfile
 				echo "press ENTER to return."
 				read __a
 			fi
@@ -189,9 +189,9 @@ __exec(){
 	fi
 }
 
-if [ ! -f $etcfile ]
+if [ ! -f $resfile ]
 then
-	> $etcfile
+	> $resfile
 fi
 
 while true
@@ -220,4 +220,4 @@ do
 
 done
 
-rm -f $etcfile
+rm -f $resfile
