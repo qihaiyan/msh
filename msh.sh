@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-srcfile="./msh.etc"
+resfile="./msh.etc"
 funfile="./msh.fun"
-resfile="./.msh"
+lockfile="./.msh"
 currlevel="1"
 current=
 currmenu="0"
@@ -13,23 +13,31 @@ redoflg=
 dependflg=
 status=
 errmsg=
-blank="                          "
+blank="          "
 
 . $funfile
 
 __showmenu(){
 	clear
-	awk -v BLANK="$blank" '$1 ~ /^MAINMENU$/{printf "\n\n\n\n%s%s\n",BLANK,$2}' $srcfile
-	printf "                    ----------------------------------\n"
+
+	prompt=`awk -F"\t" '$1 ~ /^PROMPT$/{print $2}' $resfile`
 
 	if [ $1 = "0" ]
 	then
+		banner=`awk -F"\t" '$1 ~ /^BANNER$/{print $2}' $resfile`
 		expression="\$1 ~ /^.\$/"
 	else
+		subbanner=`awk -F"\t" -v MENUID="$1" '{if($1==MENUID && $3=="submenu"){print $4}}' $resfile`
+		if [ ! "X$subbanner" = "X" ]
+		then
+			banner=$subbanner
+		fi
 		expression="\$1 ~ /^$1-.\$/"
 	fi
 
-	awk -v BLANK="$blank" -v ETCFILE="$resfile" -v MENUID="$1" \
+	$banner
+
+	awk -F"\t" -v BLANK="$blank" -v ETCFILE="$lockfile" -v MENUID="$1" \
 	'BEGIN{\
 		while ( getline tracelog < ETCFILE == 1 ){\
 			split(tracelog,menuid);\
@@ -51,7 +59,7 @@ __showmenu(){
 				_status="";\
 			}\
 			else{\
-				_status=" ˟";\
+				_status=" ✕";\
 			}\
 			print BLANK $1" "$2 sign _status; \
 			lastid=$1;\
@@ -61,10 +69,10 @@ __showmenu(){
 		if ( idstatus[MENUID]=="" && idstatus[lastid]=="OK" ){\
 			print MENUID "	OK" >> ETCFILE;
 		}\
-	}' $srcfile
+	}' $resfile
 
 	printf "${blank}q quit\n"
-	printf "input your choice:"
+	echo -n -e $red "\n   $prompt: "
 }
 
 __getfunc(){
@@ -74,7 +82,8 @@ __getfunc(){
 	redoflg=
 	dependflg=
 
-	for __p in `awk '{ if ($1 ~ /^'"$current"'$/)print $0 }' $srcfile`
+	__line=`awk -F"\t" '{ if ($1 ~ /^'"$current"'$/)print $0 }' $resfile`
+	for __p in ${__line// /}
 	do
 		__i=`expr $__i + 1`
 		if [ $__i -eq 2 ] 
@@ -142,7 +151,7 @@ __cmdcheck(){
 		return 1
 	fi
 
-	__statuslist=`awk -v depend=$dependflg '{if ($1 == depend)print $2}' $resfile`
+	__statuslist=`awk -F"\t" -v depend=$dependflg '{if ($1 == depend)print $2}' $lockfile`
 	__status=`echo $__statuslist | awk '{print $NF}'`
 
 	if [ ! "X$dependflg" = "X" -a ! "X$__status" = "XOK" ]
@@ -151,7 +160,7 @@ __cmdcheck(){
 		return 0
 	fi
 
-	__statuslist=`awk -v current=$current '{if ($1 == current)print $2}' $resfile`
+	__statuslist=`awk -F"\t" -v current=$current '{if ($1 == current)print $2}' $lockfile`
 	__status=`echo $__statuslist | awk '{print $NF}'`
 
 	if [ "X$redoflg" = "XOK" -a "X$__status" = "XOK" ]
@@ -178,7 +187,7 @@ __exec(){
 
 			if [ ! "X$cmd" = "Xsubmenu" -a ! "X$cmd" = "X__upmenu" ]
 			then
-				printf "%s	%s	%s\n" $current	$status	`date +%Y/%m/%d-%H:%M:%S` >> $resfile
+				printf "%s	%s	%s\n" $current	$status	`date +%Y/%m/%d-%H:%M:%S` >> $lockfile
 				echo "press ENTER to return."
 				read __a
 			fi
@@ -189,9 +198,9 @@ __exec(){
 	fi
 }
 
-if [ ! -f $resfile ]
+if [ ! -f $lockfile ]
 then
-	> $resfile
+	> $lockfile
 fi
 
 while true
@@ -203,7 +212,7 @@ do
 
 	if [ "X$cmd" = "XQUIT" ]
 	then
-		printf "quit(y/n)?"
+		printf "${blank}quit(y/n)?"
 		read __ok
 		if [ "X$__ok" = "Xy" ]
 		then
@@ -220,4 +229,4 @@ do
 
 done
 
-rm -f $resfile
+rm -f $lockfile
