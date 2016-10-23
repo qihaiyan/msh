@@ -72,7 +72,7 @@ __showmenu(){
 	}' $resfile
 
 	printf "${blank}q quit\n"
-	echo -n -e $red "\n   $prompt: "
+	printf "    $prompt: "
 }
 
 __getfunc(){
@@ -163,7 +163,7 @@ __cmdcheck(){
 	__statuslist=`awk -F"\t" -v current=$current '{if ($1 == current)print $2}' $lockfile`
 	__status=`echo $__statuslist | awk '{print $NF}'`
 
-	if [ "X$redoflg" = "XOK" -a "X$__status" = "XOK" ]
+	if [ "X$redoflg" = "X0" -a "X$__status" = "XOK" ]
 	then
 		errmsg=`echo "this step can't be executed repeatly."`
 		return 0

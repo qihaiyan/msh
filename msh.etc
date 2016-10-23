@@ -1,6 +1,6 @@
 PROMPT	Input your choice
 BANNER	banner	banner
 1	mysubmenu	submenu	banner1
-1-1	menufun1-1	fun101	1
+1-1	menufun1-1	fun101	0
 1-2	menufun1-2	fun102	1	1-1
-2	menufun2	fun2	1	1-1
+2	menufun2	fun2	0	1-1
