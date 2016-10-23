@@ -26,17 +26,17 @@ The definitation of the menu with msh.etc is very simple:
 PROMPT	Input your choice
 BANNER	banner	banner
 1	mysubmenu	submenu	banner1
-1-1	menufun1-1	fun101	1
+1-1	menufun1-1	fun101	0
 1-2	menufun1-2	fun102	1	1-1
-2 menufun2 fun2 1 1-1
+2	menufun2	fun2	1	1-1
 ```
 There are 5 fields separated with TAB char in this file for the menu contect.
 
 1. Menu Id
 2. Menu Name
-3. Function Name, if this menu has sub menus, the function name must be hard written to submenu
-4. Required Flag, used to define if this menu is must to execute
-5. Depend Menu Id, current menu can be to use only if the depended menu has been successfully executed
+3. Function Name, if this menu has sub menus, the function name must be hard written to submenu.
+4. Redo Flag, used to define if this menu can be executed repeatly.
+5. Depend Menu Id, current menu is ready only if the depended menu has succeed .
 
 The fun101, fun102 ... is the funtion name we defined in msh.fun,
 when we choose a menu id, the correspond function will be called.
