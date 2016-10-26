@@ -34,7 +34,7 @@ There are 5 fields separated with TAB char in this file for the menu contect.
 
 1. Menu Id
 2. Menu Name
-3. Function Name, if this menu has sub menus, the function name must be hard written to submenu.
+3. Function Name, if this menu has sub menus, the function name must be hard written to `submenu`.
 4. Redo Flag, used to define if this menu can be executed repeatly.
 5. Depend Menu Id, current menu is ready only if the depended menu has succeed .
 
