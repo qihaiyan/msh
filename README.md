@@ -38,10 +38,10 @@ There are 5 fields separated with TAB char in this file for the menu contect.
 4. Redo Flag, used to define if this menu can be executed repeatly.
 5. Depend Menu Id, current menu is ready only if the depended menu has succeed .
 
-The fun101, fun102 ... is the funtion name we defined in msh.fun,
+The fun101, fun102 ... is the function name we defined in msh.fun,
 when we choose a menu id, the correspond function will be called.
 # msh.fun
-msh.fun is just a shell file, we can define funtions refered in msh.etc .
+msh.fun is just a shell file, we can define functions refered in msh.etc .
 ``` bash
 banner(){
 	echo "            TOP-MENU"
