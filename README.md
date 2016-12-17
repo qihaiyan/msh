@@ -1,4 +1,5 @@
 # msh
+[中文介绍](README-zh.md)
 An easy to use shell menu, the view and function are seperated. The view is in msh.etc file, and the function is in msh.fun file. What's showing in the menu is easy to change by only editing the msh.etc file.
 # Installing and Running
 Get the code:
